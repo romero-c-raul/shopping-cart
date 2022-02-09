@@ -1,10 +1,10 @@
-import CartInfo from "./CartInfo"
+import Cart from "./Cart"
 
-const Header = () => {
+const Header = ({ cartContents, onCheckout }) => {
   return (  
     <header>
       <h1>The Shop!</h1>
-      <CartInfo />
+      <Cart cartContents={cartContents} onCheckout={onCheckout}/>
     </header>
   )
 }

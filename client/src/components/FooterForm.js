@@ -26,7 +26,7 @@ const FooterForm = ({onSubmit}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSubmit({title, price, quantity}, resetInputs)
+    onSubmit({title, price, quantity}, hideForm(e))
   }
 
   return (
