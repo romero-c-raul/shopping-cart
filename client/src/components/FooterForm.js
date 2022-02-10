@@ -1,7 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from "react"
-import { useDispatch } from "react-redux";
-import axios from "axios";
 
 const FooterForm = ({onSubmit}) => {
   const [title, setTitle] = useState("")
@@ -27,14 +24,9 @@ const FooterForm = ({onSubmit}) => {
     setQuantity("")
   }
 
-  const dispatch = useDispatch();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await axios.post("/api/products", {title, price, quantity})
-    const data = response.data
-    dispatch( { type: "ADD_PRODUCT", payload: { product: data }})
-    hideForm(e);
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit({title, price, quantity}, hideForm(e))
   }
 
   return (
@@ -66,4 +58,4 @@ const FooterForm = ({onSubmit}) => {
   )
 }
 
-export default FooterForm;
+export default FooterForm
