@@ -1,6 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react";
+import axios from "axios";
 import CartItem from "./CartItem"
 
-const Cart = ({ cartContents, onCheckout }) => {
+const Cart = () => {
   const cartTotal = () => {
     let sum = 0
 
@@ -13,8 +17,20 @@ const Cart = ({ cartContents, onCheckout }) => {
 
   const handleCheckout = (e) => {
     e.preventDefault()
-    onCheckout()
+    // onCheckout()
   }
+
+  const dispatch = useDispatch();
+  const cartContents = useSelector((state) => state.cartContents);
+
+  useEffect(() => {
+    const getCartContents = async () => {
+      const response = await axios.get("/api/cart")
+      const data = response.data
+      dispatch( { type: "CART_CONTENTS_RECEIVED", payload: { cartContents: data } } );
+    }
+    getCartContents()
+  }, [dispatch])
 
   return ( 
     <div class="cart">
