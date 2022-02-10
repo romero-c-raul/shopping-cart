@@ -1,12 +1,12 @@
-import Cart from "./Cart"
+import Cart from "./Cart";
 
 const Header = ({ cartContents, onCheckout }) => {
-  return (  
+  return (
     <header>
       <h1>The Shop!</h1>
-      <Cart cartContents={cartContents} onCheckout={onCheckout}/>
+      <Cart cartContents={cartContents} onCheckout={onCheckout} />
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

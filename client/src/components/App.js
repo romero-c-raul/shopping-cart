@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "./Header"
-import ProductList from "./ProductList"
-import FooterForm from "./FooterForm"
+import Header from "./Header";
+import ProductList from "./ProductList";
+import FooterForm from "./FooterForm";
 
 const App = () => {
   // const handleDelete = async (id) => {
@@ -44,18 +44,18 @@ const App = () => {
 
   //     const response = await axios.get("/api/products")
   //     const data = response.data
-  //     setProducts(data)      
+  //     setProducts(data)
   //   }
   // }
 
   // const handleCheckout = async () => {
   //   const response = await axios.post('/api/checkout')
   //   setCartContents(response.data)
-    
-    // if (response !== 200) {
-    //   console.log("Could not checkout cart")
-    // } else {
-    // }
+
+  // if (response !== 200) {
+  //   console.log("Could not checkout cart")
+  // } else {
+  // }
   // }
 
   return (
@@ -63,11 +63,11 @@ const App = () => {
       <Header />
       <main>
         <ProductList />
-       {/* <ProductList onDelete={handleDelete} onUpdate={handleUpdate} onAddToCart={handleAddToCart}/> */}
-       <FooterForm />
+        {/* <ProductList onDelete={handleDelete} onUpdate={handleUpdate} onAddToCart={handleAddToCart}/> */}
+        <FooterForm />
       </main>
     </div>
-  )
+  );
 };
 
 export default App;
