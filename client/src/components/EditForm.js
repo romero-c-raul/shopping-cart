@@ -1,14 +1,34 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from "react";
+import axios from "axios";
+import {useDispatch, useSelector} from "react-redux"
 
 const EditForm = ({ cancelEdit, title, price, quantity, id, onUpdate }) => {
   const [newTitle, setNewTitle] = useState(title);
   const [newPrice, setNewPrice] = useState(price);
   const [newQuantity, setNewQuantity] = useState(quantity);
 
-  const handleUpdate = (e) => {
+  const dispatch = useDispatch();
+  const products = useSelector(state => state.products)
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    onUpdate(id, { title: newTitle, price: newPrice, quantity: newQuantity });
+   
+    const response = await axios.put(`/api/products/${id}`, {title: newTitle, price: newPrice, quantity: newQuantity})
+    const updatedProduct = response.data
+
+    if (response.status !== 200) {
+      console.log("Product not found.")
+    } else {
+      const recentProducts = products.map(product => {
+        if (product._id !== id) {
+          return product
+        } else {
+          return updatedProduct
+        }
+      })
+      dispatch({type: "PRODUCTS_RECEIVED", payload:{products: recentProducts}})
+    }
     cancelEdit();
   };
 

@@ -7,29 +7,35 @@ import EditForm from "./EditForm";
 const Product = ({ _id, title, quantity, price }) => {
   const [isEdit, setIsEdit] = useState(false);
 
-  // const handleDelete = async (id) => {
-  //   const response = await axios.delete(`/api/products/${id}`)
-  //   if (response.status !== 200) {
-  //     console.log("Product not found.")
-  //   } else {
-  //     setProducts(products.filter(product => product._id !== id))
-  //   }
-  // }
-
   const dispatch = useDispatch();
   // const products = useSelector((state) => state.products);
 
   const handleDelete = async (e) => {
     e.preventDefault();
     const response = await axios.delete(`/api/products/${_id}`);
-    const data = response.data;
-    dispatch({ type: "DELETE_PRODUCT", payload: { product: data._id } });
+
+    if (response.status !== 200) {
+      console.log("Product not found.")
+    } else {
+      dispatch({ type: "DELETE_PRODUCT", payload: { id: _id } });
+    }
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
-    // Need to call a function defined in App that performs a post request to add to cart route
-    // onAddToCart(_id)
+    const response = await axios.post('/api/add-to-cart', {productId: _id})
+
+    if (response.status !== 200) {
+      console.log("Could not update cart.")
+    } else {
+      const cartResponse = await axios.get('/api/cart')
+      const allCartItems = cartResponse.data
+      dispatch({type: "ADD_TO_CART", payload: allCartItems})
+
+      const response = await axios.get("/api/products")
+      const data = response.data
+      dispatch({type: "PRODUCTS_RECEIVED", payload: {products: data} })
+    }
   };
 
   return (

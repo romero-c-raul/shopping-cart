@@ -5,6 +5,8 @@ import axios from "axios";
 import CartItem from "./CartItem";
 
 const Cart = () => {
+  const dispatch = useDispatch();
+
   const cartTotal = () => {
     let sum = 0;
 
@@ -15,12 +17,18 @@ const Cart = () => {
     return sum;
   };
 
-  const handleCheckout = (e) => {
+  const handleCheckout = async (e) => {
     e.preventDefault();
-    // onCheckout()
+
+    const response = await axios.post("/api/checkout");
+
+    dispatch({ type: "CART_CONTENTS_RECEIVED", payload: { cartContents: [] } });
+
+    if (response.status !== 200) {
+      console.log("Could not checkout cart");
+    }
   };
 
-  const dispatch = useDispatch();
   const cartContents = useSelector((state) => state.cartContents);
 
   useEffect(() => {
