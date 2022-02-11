@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import axios from "axios";
 import CartItem from "./CartItem";
+import { getCartContents, checkout } from "../actions/cartActions";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -20,27 +20,13 @@ const Cart = () => {
   const handleCheckout = async (e) => {
     e.preventDefault();
 
-    const response = await axios.post("/api/checkout");
-
-    dispatch({ type: "CART_CONTENTS_RECEIVED", payload: { cartContents: [] } });
-
-    if (response.status !== 200) {
-      console.log("Could not checkout cart");
-    }
+    dispatch(checkout());
   };
 
   const cartContents = useSelector((state) => state.cartContents);
 
   useEffect(() => {
-    const getCartContents = async () => {
-      const response = await axios.get("/api/cart");
-      const data = response.data;
-      dispatch({
-        type: "CART_CONTENTS_RECEIVED",
-        payload: { cartContents: data },
-      });
-    };
-    getCartContents();
+    dispatch(getCartContents());
   }, [dispatch]);
 
   return (

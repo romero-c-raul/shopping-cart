@@ -1,19 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import axios from "axios";
+import { productsReceived } from "../actions/productActions";
+
 import Product from "./Product";
 
 const ProductList = () => {
-  const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const getProducts = async () => {
-      const response = await axios.get("/api/products");
-      const data = response.data;
-      dispatch({ type: "PRODUCTS_RECEIVED", payload: { products: data } });
-    };
-    getProducts();
+    dispatch(productsReceived());
   }, [dispatch]);
 
   return (
