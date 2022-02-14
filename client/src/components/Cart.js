@@ -1,50 +1,62 @@
-import CartItem from "./CartItem"
+import { useContext, useEffect } from "react";
+import { CartContext, getCartContents } from "../context/cartContext";
+import CartItem from "./CartItem";
 
-const Cart = ({ cartContents, onCheckout }) => {
+const Cart = ({ onCheckout }) => {
+  const { cartContents, dispatch } = useContext(CartContext);
+
+  useEffect(() => {
+    getCartContents(dispatch);
+  }, [dispatch]);
+
   const cartTotal = () => {
-    let sum = 0
+    let sum = 0;
 
-    cartContents.forEach(content => {
-      sum += (content.price * content.quantity)
-    })
+    cartContents.forEach((content) => {
+      sum += content.price * content.quantity;
+    });
 
-    return sum
-  }
+    return sum;
+  };
 
   const handleCheckout = (e) => {
-    e.preventDefault()
-    onCheckout()
-  }
+    e.preventDefault();
+    onCheckout();
+  };
 
-  return ( 
+  return (
     <div class="cart">
       <h2>Your Cart</h2>
-      {(cartContents.length === 0) ?
-      (<>
-      <p>Your cart is empty</p>
-      <p>Total: $0</p>
-      <a class="button checkout disabled">Checkout</a>
-      </>) : 
-      (<>
-      <table class="cart-items">
-        <tr>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Price</th>
-        </tr>
-        {cartContents.map(content => {
-          return <CartItem {...content}/>
-        })}
-      <tr>
-        <td colspan="3" class="total">Total: ${cartTotal().toFixed(2)}</td>
-      </tr>
-      </table>
-      <a onClick={handleCheckout} class="button checkout">Checkout</a>
-      </>)
-    }
+      {cartContents.length === 0 ? (
+        <>
+          <p>Your cart is empty</p>
+          <p>Total: $0</p>
+          <a class="button checkout disabled">Checkout</a>
+        </>
+      ) : (
+        <>
+          <table class="cart-items">
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+            {cartContents.map((content) => {
+              return <CartItem {...content} />;
+            })}
+            <tr>
+              <td colspan="3" class="total">
+                Total: ${cartTotal().toFixed(2)}
+              </td>
+            </tr>
+          </table>
+          <a onClick={handleCheckout} class="button checkout">
+            Checkout
+          </a>
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
-
-export default Cart
+export default Cart;
