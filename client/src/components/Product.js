@@ -1,19 +1,25 @@
-import {useState} from "react"
-import EditForm from "./EditForm"
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import EditForm from "./EditForm";
+import { productsReceived, productRemoved } from "../actions/productActions";
+import { addToCart } from "../actions/cartActions";
 
-const Product = ({_id, title, quantity, price, onDelete, onUpdate, onAddToCart}) => {
-  const [isEdit, setIsEdit] = useState(false)
+const Product = ({ _id, title, quantity, price }) => {
+  const [isEdit, setIsEdit] = useState(false);
 
-  const handleDelete = (e) => {
-    e.preventDefault()
-    onDelete(_id)
-  }
+  const dispatch = useDispatch();
 
-  const handleAddToCart = (e) => {
-    e.preventDefault()
-    // Need to call a function defined in App that performs a post request to add to cart route
-    onAddToCart(_id)
-  }
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    dispatch(productRemoved(_id));
+  };
+
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+    dispatch(addToCart(_id));
+    dispatch(productsReceived());
+  };
 
   return (
     <div class="product">
@@ -22,18 +28,29 @@ const Product = ({_id, title, quantity, price, onDelete, onUpdate, onAddToCart})
         <p class="price">{`$${price}`}</p>
         <p class="quantity">{quantity} left in stock</p>
         {isEdit ? (
-          <EditForm cancelEdit={() => setIsEdit(false)} title={title} price={price} quantity={quantity} id={_id} onUpdate={onUpdate}/>
+          <EditForm
+            cancelEdit={() => setIsEdit(false)}
+            title={title}
+            price={price}
+            quantity={quantity}
+            id={_id}
+          />
         ) : (
           <div class="actions product-actions">
-            <a onClick={handleAddToCart} class="button add-to-cart">Add to Cart</a>
-            <a onClick={() => setIsEdit(true)} class="button edit">Edit</a>
+            <a onClick={handleAddToCart} class="button add-to-cart">
+              Add to Cart
+            </a>
+            <a onClick={() => setIsEdit(true)} class="button edit">
+              Edit
+            </a>
           </div>
-        )
-        }
-        <a onClick={handleDelete} class="delete-button"><span>X</span></a>
+        )}
+        <a onClick={handleDelete} class="delete-button">
+          <span>X</span>
+        </a>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;
