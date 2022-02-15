@@ -1,25 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { productsReceived } from "../actions/productActions";
+import Product from "./Product"
 
-import Product from "./Product";
-
-const ProductList = () => {
-  const products = useSelector((state) => state.products);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(productsReceived());
-  }, [dispatch]);
-
+const ProductList = ({products, onDelete, onUpdate, onAddToCart}) => {
   return (
     <div class="product-listing">
       <h2>Products</h2>
       {products.map((product) => {
-        return <Product key={product._id} {...product} />;
+         return <Product key={product._id} {...product} onDelete={onDelete} onUpdate={onUpdate} onAddToCart={onAddToCart}/>
       })}
     </div>
-  );
-};
+  )
+}
 
-export default ProductList;
+export default ProductList
